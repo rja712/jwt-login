@@ -1,0 +1,41 @@
+type User {
+    id: ID!
+    username: String!
+    email: String!
+    enabled: Boolean!
+    createdAt: String!
+    updatedAt: String!
+    roles: [String!]!
+}
+
+type CreateUserResponse {
+    id: ID!
+    username: String!
+    email: String!
+    enabled: Boolean!
+    createdAt: String!
+    updatedAt: String!
+    roles: [String!]!
+}
+
+type UpdateUserResponse {
+    id: ID!
+    username: String!
+    email: String!
+    enabled: Boolean!
+    createdAt: String!
+    updatedAt: String!
+    roles: [String!]!
+}
+
+type Query {
+    getAllUsers: [User!]!
+    getUserById(id: ID!): User!
+    getUserByUsername(username: String!): User!
+}
+
+type Mutation {
+    createUser(username: String!, email: String!, password: String!): CreateUserResponse!
+    updateUser(id: ID!, email: String, password: String, enabled: Boolean): UpdateUserResponse!
+    deleteUser(id: ID!): Boolean!
+}
