@@ -6,11 +6,19 @@ const isUsersPage = window.location.pathname.endsWith('users.html');
 
 // GraphQL query functions
 async function graphqlQuery(query, variables = {}) {
+    const headers = {
+        'Content-Type': 'application/json',
+    };
+    
+    // Add Authorization header if token exists
+    const token = localStorage.getItem('token');
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+    
     const response = await fetch(GRAPHQL_ENDPOINT, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({
             query,
             variables
@@ -45,6 +53,30 @@ async function getAllUsers() {
     return data.getAllUsers;
 }
 
+// Login function
+async function login(username, password) {
+    const query = `
+        mutation($username: String!, $password: String!) {
+            login(username: $username, password: $password)
+        }
+    `;
+    
+    const variables = { username, password };
+    const data = await graphqlQuery(query, variables);
+    return data.login;
+}
+
+// Check if token is expired
+function isTokenExpired(token) {
+    if (!token) return true;
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.exp < Date.now() / 1000;
+    } catch (e) {
+        return true;
+    }
+}
+
 // Login page functionality
 if (isLoginPage) {
     const loginForm = document.getElementById('loginForm');
@@ -58,8 +90,12 @@ if (isLoginPage) {
         const password = document.getElementById('password').value;
         
         try {
-            // For now, just redirect to users page since JWT auth is not implemented yet
-            // In a real implementation, you would call a login mutation here
+            const token = await login(username, password);
+            
+            // Store token in localStorage (in a real app, you'd use httpOnly cookies)
+            localStorage.setItem('token', token);
+            
+            // Redirect to users page
             window.location.href = 'users.html';
         } catch (error) {
             errorDiv.textContent = error.message;
@@ -70,6 +106,14 @@ if (isLoginPage) {
 
 // Users page functionality
 if (isUsersPage) {
+    // Check if user is authenticated and token is not expired
+    const token = localStorage.getItem('token');
+    if (!token || isTokenExpired(token)) {
+        localStorage.removeItem('token');
+        window.location.href = 'index.html';
+        return;
+    }
+    
     const usersTableBody = document.getElementById('usersTableBody');
     const loadingDiv = document.getElementById('loading');
     const errorDiv = document.getElementById('error');
@@ -104,6 +148,7 @@ if (isUsersPage) {
     
     // Logout functionality
     logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('token');
         window.location.href = 'index.html';
     });
     

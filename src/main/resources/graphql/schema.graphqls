@@ -38,4 +38,5 @@ type Mutation {
     createUser(username: String!, email: String!, password: String!): CreateUserResponse!
     updateUser(id: ID!, email: String, password: String, enabled: Boolean): UpdateUserResponse!
     deleteUser(id: ID!): Boolean!
+    login(username: String!, password: String!): String!
 }
