@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Spring Boot Actuator's Prometheus endpoint, once spring-boot-starter-actuator
+  # + micrometer-registry-prometheus are added to pom.xml.
+  # The app runs on the host (outside this compose stack), so it's reached via
+  # host.docker.internal rather than a compose service name.
+  - job_name: jwt-login-app
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ["host.docker.internal:8080"]

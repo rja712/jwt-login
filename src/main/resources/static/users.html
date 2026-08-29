@@ -2,36 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Users - JWT Authentication</title>
-    <link rel="stylesheet" href="styles.css">
+    <link href="styles.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
+<div class="container">
+    <div class="header">
+        <div>
             <h1>Users List</h1>
-            <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+            <div class="user-info" id="userInfo"></div>
+            <div class="view-mode" id="viewMode"></div>
         </div>
-        <div id="usersContainer" class="users-container">
-            <table class="users-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Enabled</th>
-                        <th>Roles</th>
-                        <th>Created At</th>
-                    </tr>
-                </thead>
-                <tbody id="usersTableBody">
-                    <!-- Users will be loaded here -->
-                </tbody>
-            </table>
+        <div class="header-actions">
+            <button class="btn btn-primary" id="addUserBtn">Add User</button>
+            <button class="btn btn-secondary" id="logoutBtn">Logout</button>
         </div>
-        <div id="error" class="error-message"></div>
-        <div id="loading" class="loading">Loading users...</div>
     </div>
-    <script src="app.js"></script>
+    <div class="users-container" id="usersContainer">
+        <table class="users-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th class="sortable" id="enabledHeader">Status <span class="sort-arrow" id="enabledSortArrow"></span></th>
+                <th>Roles</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="usersTableBody">
+            <!-- Users will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+    <div class="error-message" id="error"></div>
+    <div class="loading" id="loading">Loading users...</div>
+</div>
+<script src="app.js"></script>
 </body>
 </html>

@@ -2,9 +2,9 @@ spring:
   application:
     name: jwt-login
   datasource:
-    url: jdbc:postgresql://localhost:5433/mini_idm
-    username: idm_user
-    password: idm_password
+    url: jdbc:postgresql://localhost:5433/stock_int
+    username: stock_int_user
+    password: stock_int_password
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -13,10 +13,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/mini_idm
   flyway:
     enabled: true
     locations: classpath:db.migration
     baseline-on-migrate: true
+
+jwt:
+  secret: this-is-a-32-char-secret-for-jwt

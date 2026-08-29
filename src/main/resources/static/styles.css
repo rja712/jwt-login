@@ -115,6 +115,19 @@ body {
     color: #333;
 }
 
+.user-info {
+    color: #555;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.view-mode {
+    color: #777;
+    font-size: 13px;
+    margin-top: 3px;
+    font-style: italic;
+}
+
 .users-container {
     background: white;
     padding: 30px;
@@ -142,6 +155,38 @@ body {
 
 .users-table tr:hover {
     background: #f8f9fa;
+}
+
+.users-table th.sortable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.users-table th.sortable:hover {
+    background: #eef0f3;
+}
+
+.sort-arrow {
+    font-size: 11px;
+    color: #667eea;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-badge.active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.banned {
+    background: #f8d7da;
+    color: #721c24;
 }
 
 .loading {
