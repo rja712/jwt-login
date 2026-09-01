@@ -52,7 +52,6 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-database-postgresql</artifactId>
         </dependency>
-
         <!-- ==================== Security ==================== -->
         <!-- Spring Security core: PasswordEncoder, SecurityFilterChain, UserDetailsService, etc. -->
         <dependency>
@@ -187,6 +186,17 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <configuration>
+                    <url>jdbc:postgresql://localhost:5433/stock_int</url>
+                    <user>stock_int_user</user>
+                    <password>stock_int_password</password>
+                    <cleanDisabled>false</cleanDisabled>
+                    <locations>classpath:db.migration</locations>
                 </configuration>
             </plugin>
         </plugins>

@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenValidator tokenValidator;
@@ -34,10 +36,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
 
-            if (!tokenBlacklist.isBlacklisted(token)) {
+            if (tokenBlacklist.isBlacklisted(token)) {
+                log.debug("Blacklisted token used on {} {}", request.getMethod(), request.getRequestURI());
+            } else {
                 TokenClaims claims = tokenValidator.validate(token);
 
-                if (claims != null && claims.username() != null) {
+                if (claims == null || claims.username() == null) {
+                    // Not an error: an expired or malformed token simply leaves the request
+                    // unauthenticated, and Spring Security answers 401 further down the chain.
+                    log.debug("Rejected token on {} {}", request.getMethod(), request.getRequestURI());
+                } else {
                     List<SimpleGrantedAuthority> authorities = claims.roles().stream()
                             .map(SimpleGrantedAuthority::new)
                             .collect(Collectors.toList());

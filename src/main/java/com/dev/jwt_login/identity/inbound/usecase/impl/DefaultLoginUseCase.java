@@ -9,6 +9,7 @@ import com.dev.jwt_login.identity.inbound.usecase.LoginUseCase;
 import com.dev.jwt_login.identity.infrastructure.token.TokenGenerator;
 import com.dev.jwt_login.identity.outbound.event.DomainEventPublisher;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class DefaultLoginUseCase implements LoginUseCase {
 
     private final LoginService loginService;
@@ -37,6 +39,7 @@ public class DefaultLoginUseCase implements LoginUseCase {
         publishEvents(user.getDomainEvents());
         user.clearDomainEvents();
 
+        log.info("Login succeeded for '{}' with roles {}", user.getUsername(), roles);
         return new LoginResponse(token);
     }
 

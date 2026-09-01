@@ -10,6 +10,7 @@ import com.dev.jwt_login.identity.inbound.model.response.UserResponse;
 import com.dev.jwt_login.identity.inbound.usecase.CreateUserUseCase;
 import com.dev.jwt_login.identity.outbound.event.DomainEventPublisher;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class DefaultCreateUserUseCase implements CreateUserUseCase {
 
     private final UserService userService;
@@ -33,6 +35,7 @@ public class DefaultCreateUserUseCase implements CreateUserUseCase {
         publishEvents(user.getDomainEvents());
         user.clearDomainEvents();
 
+        log.info("Created user '{}'", saved.getUsername());
         return userMapper.toDto(saved);
     }
 

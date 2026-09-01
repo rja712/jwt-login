@@ -42,6 +42,8 @@ public class SecurityConfig {
                         .requestMatchers("/", "/index.html", "/users.html", "/styles.css", "/app.js").permitAll()
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/api/temp/reset-admin-password").permitAll()
+                        .requestMatchers("/api/ingester/receive-stock-snapshot").permitAll()
+                        .requestMatchers("/api/ingester/ping").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
